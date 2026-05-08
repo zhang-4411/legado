@@ -70,6 +70,7 @@ class ReadAloudConfigDialog : BasePrefDialogFragment() {
             get() {
                 val ttsEngine = ReadAloud.ttsEngine
                     ?: return getString(R.string.system_tts)
+                if (ttsEngine == "mimo") return "MiMo AI"
                 if (StringUtils.isNumeric(ttsEngine)) {
                     return appDb.httpTTSDao.getName(ttsEngine.toLong())
                         ?: getString(R.string.system_tts)

@@ -11,6 +11,7 @@ import io.legado.app.data.entities.HttpTTS
 import io.legado.app.help.config.AppConfig
 import io.legado.app.service.BaseReadAloudService
 import io.legado.app.service.HttpReadAloudService
+import io.legado.app.service.MiMoTtsService
 import io.legado.app.service.TTSReadAloudService
 import io.legado.app.utils.LogUtils
 import io.legado.app.utils.StringUtils
@@ -28,6 +29,9 @@ object ReadAloud {
         val ttsEngine = ttsEngine
         if (ttsEngine.isNullOrBlank()) {
             return TTSReadAloudService::class.java
+        }
+        if (ttsEngine == "mimo") {
+            return MiMoTtsService::class.java
         }
         if (StringUtils.isNumeric(ttsEngine)) {
             httpTTS = appDb.httpTTSDao.get(ttsEngine.toLong())

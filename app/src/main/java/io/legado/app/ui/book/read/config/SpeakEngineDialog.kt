@@ -137,6 +137,21 @@ class SpeakEngineDialog() : BaseDialogFragment(R.layout.dialog_recycler_view),
                 }
             }
         }
+        adapter.addHeaderView {
+            ItemHttpTtsBinding.inflate(layoutInflater, recyclerView, false).apply {
+                ivMenuDelete.gone()
+                labelSys.gone()
+                cbName.text = "MiMo AI"
+                cbName.tag = "mimo"
+                cbName.isChecked = ttsEngine == "mimo"
+                cbName.setOnClickListener {
+                    upTts("mimo")
+                }
+                ivEdit.setOnClickListener {
+                    showDialogFragment(MiMoTtsConfigDialog())
+                }
+            }
+        }
         tvFooterLeft.setText(R.string.book)
         tvFooterLeft.visible()
         tvFooterLeft.setOnClickListener {
@@ -228,10 +243,17 @@ class SpeakEngineDialog() : BaseDialogFragment(R.layout.dialog_recycler_view),
 
     private fun upTts(tts: String) {
         ttsEngine = tts
+        val isMimo = tts == "mimo"
         sysTtsViews.forEach {
-            it.isChecked = GSON.fromJsonObject<SelectItem<String>>(ttsEngine)
-                .getOrNull()?.value == it.tag
+            if (isMimo) {
+                it.isChecked = false
+            } else {
+                it.isChecked = GSON.fromJsonObject<SelectItem<String>>(ttsEngine)
+                    .getOrNull()?.value == it.tag
+            }
         }
+        // Update MiMo checkbox directly via tag lookup
+        binding.recyclerView.findViewWithTag<RadioButton>("mimo")?.isChecked = isMimo
         adapter.notifyItemRangeChanged(adapter.getHeaderCount(), adapter.itemCount)
     }
 

@@ -371,6 +371,24 @@ object AppConfig : SharedPreferences.OnSharedPreferenceChangeListener {
             appCtx.putPrefString(PreferKey.ttsEngine, value)
         }
 
+    var mimoApiKey: String?
+        get() = appCtx.getPrefString(PreferKey.mimoApiKey)
+        set(value) {
+            appCtx.putPrefString(PreferKey.mimoApiKey, value)
+        }
+
+    var mimoVoice: String
+        get() = appCtx.getPrefString(PreferKey.mimoVoice) ?: "mimo_default"
+        set(value) {
+            appCtx.putPrefString(PreferKey.mimoVoice, value)
+        }
+
+    var mimoStylePrompt: String?
+        get() = appCtx.getPrefString(PreferKey.mimoStylePrompt)
+        set(value) {
+            appCtx.putPrefString(PreferKey.mimoStylePrompt, value)
+        }
+
     var webPort: Int
         get() = appCtx.getPrefInt(PreferKey.webPort, 1122)
         set(value) {
